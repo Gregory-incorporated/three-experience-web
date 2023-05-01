@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import Experience from "../Experience";
+import Environment from "./Environment";
 import Room from "./Room";
 
 export default class World {
@@ -10,16 +11,24 @@ export default class World {
     this.canvas = this.experience.canvas;
     this.camera = this.experience.camera;
     this.resources = this.experience.resources;
+    this.theme = this.experience.theme;
 
     this.resources.on("ready", () => {
+      this.environment = new Environment();
       this.room = new Room();
-      console.log("created room");
-    });
 
-    this.room = new Room();
+      //this.emit("worldready");
+    });
   }
 
   resize() {}
 
-  update() {}
+  update() {
+    if (this.room) {
+      this.room.update();
+    }
+    if (this.controls) {
+      this.controls.update();
+    }
+  }
 }
